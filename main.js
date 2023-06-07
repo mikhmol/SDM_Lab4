@@ -1,30 +1,51 @@
-const fs = require('fs');
+const {
+    getIncompleteTasks,
+    getAllTasks,
+    markTaskAsCompleted,
+    addTask,
+    editTask,
+    getOverdueTasks,
+    deleteTask
+  } = require('./taskManager');
+  
+  if (process.argv.length < 3) {
+    console.log('Usage: node app.js <command> [arguments]');
+    process.exit(1);
+  }
+  
+  const command = process.argv[2];
+  
+  const commandActions = {
+  'get-incomplete': getIncompleteTasks,
+  'get-all': getAllTasks,
+  'mark-completed': () => {
+    const taskTitle = process.argv[3];
+    markTaskAsCompleted(taskTitle);
+  },
+  'add': () => {
+    const title = process.argv[3];
+    const description = process.argv[4];
+    const deadline = process.argv[5];
+    addTask(title, description, deadline);
+  },
+  'edit': () => {
+    const taskTitle = process.argv[3];
+    const newTitle = process.argv[4];
+    const newDescription = process.argv[5];
+    const newDeadline = process.argv[6];
+    editTask(taskTitle, newTitle, newDescription, newDeadline);
+  },
+  'get-overdue': getOverdueTasks,
+  'delete': () => {
+    const taskTitle = process.argv[3];
+    deleteTask(taskTitle);
+  }
+};
 
-const TASKS_FILE = 'tasks.json'; // Файл, де зберігаються завдання
-
-function saveTasks(tasks) {
-  fs.writeFileSync(TASKS_FILE, JSON.stringify(tasks, null, 2));
+if (command in commandActions) {
+  commandActions[command]();
+} else {
+  console.log('Invalid command.');
+  process.exit(1);
 }
-
-function showIncompleteTasks() {
-  const tasks = loadTasks();
-  const incompleteTasks = tasks.filter((task) => !task.completed);
-  incompleteTasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-  console.log('Incomplete Tasks:');
-  incompleteTasks.forEach((task) => {
-    console.log(`- ${task.title} (Deadline: ${task.deadline})`);
-  });
-}
-
-function addTask(title, description, deadline) {
-  const tasks = loadTasks();
-  const task = {
-    title,
-    description,
-    deadline,
-    completed: false,
-  };
-  tasks.push(task);
-  saveTasks(tasks);
-  console.log(`Task "${title}" added.`);
-}
+  
