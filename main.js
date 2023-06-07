@@ -15,31 +15,37 @@ const {
   
   const command = process.argv[2];
   
-  if (command === 'get-incomplete') {
-    getIncompleteTasks();
-  } else if (command === 'get-all') {
-    getAllTasks();
-  } else if (command === 'mark-completed') {
+  const commandActions = {
+  'get-incomplete': getIncompleteTasks,
+  'get-all': getAllTasks,
+  'mark-completed': () => {
     const taskTitle = process.argv[3];
     markTaskAsCompleted(taskTitle);
-  } else if (command === 'add') {
+  },
+  'add': () => {
     const title = process.argv[3];
     const description = process.argv[4];
     const deadline = process.argv[5];
     addTask(title, description, deadline);
-  } else if (command === 'edit') {
+  },
+  'edit': () => {
     const taskTitle = process.argv[3];
     const newTitle = process.argv[4];
     const newDescription = process.argv[5];
     const newDeadline = process.argv[6];
     editTask(taskTitle, newTitle, newDescription, newDeadline);
-  } else if (command === 'get-overdue') {
-    getOverdueTasks();
-  } else if (command === 'delete') {
+  },
+  'get-overdue': getOverdueTasks,
+  'delete': () => {
     const taskTitle = process.argv[3];
     deleteTask(taskTitle);
-  } else {
-    console.log('Invalid command.');
-    process.exit(1);
   }
+};
+
+if (command in commandActions) {
+  commandActions[command]();
+} else {
+  console.log('Invalid command.');
+  process.exit(1);
+}
   
