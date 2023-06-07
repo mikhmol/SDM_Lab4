@@ -28,3 +28,15 @@ function addTask(title, description, deadline) {
   saveTasks(tasks);
   console.log(`Task "${title}" added.`);
 }
+
+function deleteTask(taskTitle) {
+    const tasks = loadTasks();
+    const index = tasks.findIndex((task) => task.title === taskTitle);
+    if (index !== -1) {
+      tasks.splice(index, 1);
+      saveTasks(tasks);
+      console.log(`Task "${taskTitle}" deleted.`);
+    } else {
+      console.log(`Task "${taskTitle}" not found.`);
+    }
+  }
