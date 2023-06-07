@@ -2,6 +2,15 @@ const fs = require('fs');
 
 const TASKS_FILE = 'tasks.json'; // Файл, де зберігаються завдання
 
+function loadTasks() {
+    try {
+      const tasksData = fs.readFileSync(TASKS_FILE, 'utf8');
+      return JSON.parse(tasksData);
+    } catch (error) {
+      return [];
+    }
+  }
+
 function saveTasks(tasks) {
   fs.writeFileSync(TASKS_FILE, JSON.stringify(tasks, null, 2));
 }
@@ -15,6 +24,15 @@ function showIncompleteTasks() {
     console.log(`- ${task.title} (Deadline: ${task.deadline})`);
   });
 }
+
+function showAllTasks() {
+    const tasks = loadTasks();
+    console.log('All Tasks:');
+    tasks.forEach((task) => {
+      const status = task.completed ? 'Completed' : 'Incomplete';
+      console.log(`- ${task.title} (Deadline: ${task.deadline}, Status: ${status})`);
+    });
+  }
 
 function addTask(title, description, deadline) {
   const tasks = loadTasks();
