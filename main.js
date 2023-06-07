@@ -110,7 +110,24 @@ function deleteTask(taskTitle) {
   } else if (command === 'mark-completed') {
     const taskTitle = process.argv[3];
     markTaskAsCompleted(taskTitle);
+  } else if (command === 'add') {
+    const title = process.argv[3];
+    const description = process.argv[4];
+    const deadline = process.argv[5];
+    addTask(title, description, deadline);
+  } else if (command === 'edit') {
+    const taskTitle = process.argv[3];
+    const newTitle = process.argv[4];
+    const newDescription = process.argv[5];
+    const newDeadline = process.argv[6];
+    editTask(taskTitle, newTitle, newDescription, newDeadline);
+  } else if (command === 'show-overdue') {
+    showOverdueTasks();
+  } else if (command === 'delete') {
+    const taskTitle = process.argv[3];
+    deleteTask(taskTitle);
   } else {
     console.log('Invalid command.');
     process.exit(1);
   }
+  
