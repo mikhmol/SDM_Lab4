@@ -39,3 +39,8 @@ Replace <command> with one of the available commands:
 - get-overdue: Show the list of overdue tasks.
 - delete <taskTitle>: Delete a task. Replace <taskTitle> with the title of the task.
 Note: The arguments in square brackets [arguments] are optional.
+ 
+  My code review:
+  https://github.com/bLuDd1/KPI-Schedule/pull/1
+  Code review for me:
+  https://github.com/mikhmol/SDM_Lab4/pull/1
